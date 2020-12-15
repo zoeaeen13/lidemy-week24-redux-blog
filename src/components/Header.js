@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { Link, useLocation, useHistory } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../contexts";
-import { setAuthToken } from "../utills";
 import { MEDIA_QUERY_MD } from "../constants/style";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import { setLoginOut } from "../redux/reducers/userReducer";
+import { useSelector, useDispatch } from "react-redux";
 
 const Nav = styled.div`
   display: flex;
@@ -84,17 +83,12 @@ const BtnPost = styled(BtnLogin)`
 
 export default function Header() {
   let location = useLocation();
-  const history = useHistory();
+  const dispatch = useDispatch();
+  const isLogin = useSelector((store) => store.user.isLogin);
   const isPosting = location.pathname === "/post";
-  const { user, setUser } = useContext(AuthContext);
 
   const handleLogout = () => {
-    setAuthToken(null);
-    setUser(null);
-
-    if (location.pathname !== "/") {
-      history.push("/");
-    }
+    dispatch(setLoginOut());
   };
 
   return (
@@ -112,12 +106,12 @@ export default function Header() {
         </NavItem>
       </Wrapper>
       <div>
-        {!user && <BtnLogin to="/register">Sign up</BtnLogin>}
-        {!user && <BtnLogin to="/login">Log in</BtnLogin>}
-        {user && !isPosting && (
+        {!isLogin && <BtnLogin to="/register">Sign up</BtnLogin>}
+        {!isLogin && <BtnLogin to="/login">Log in</BtnLogin>}
+        {isLogin && !isPosting && (
           <BtnLogout onClick={handleLogout}>Sign out</BtnLogout>
         )}
-        {user && !isPosting && <BtnPost to="/post">New Post</BtnPost>}
+        {isLogin && !isPosting && <BtnPost to="/post">New Post</BtnPost>}
       </div>
     </Nav>
   );

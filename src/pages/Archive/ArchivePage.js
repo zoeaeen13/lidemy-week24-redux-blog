@@ -76,7 +76,8 @@ function ArchivePage() {
             '{userData.nickname}' 目前發表了 {userData.postsNum} 篇文章
           </ArchiveTitle>
         )}
-        {recentPosts &&
+        {!slug &&
+          recentPosts &&
           recentPosts.map((post) => <ArchiveItem key={post.id} post={post} />)}
         {slug &&
           userPosts &&

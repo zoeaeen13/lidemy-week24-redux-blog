@@ -1,8 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { register, getUserInfo } from "../../WebAPI";
-import { setAuthToken } from "../../utills";
-import { AuthContext } from "../../contexts";
+import ERRMESSAGE from "../../constants/errorMessage";
+import { setRegister, setLoginInfo } from "../../redux/reducers/userReducer";
+import { getAuthToken } from "../../utills";
+import { useSelector, useDispatch } from "react-redux";
 import {
   LoginPageRoot,
   LoginTitle,
@@ -15,13 +16,22 @@ import {
 } from "../../components/Login";
 
 function RegisterPage() {
-  const { setUser } = useContext(AuthContext);
+  // UI state
   const [username, setUsername] = useState("");
   const [nickname, setNickname] = useState("");
   const password = "Lidemy";
   const [isClicked, setClicked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const isLogin = useSelector((store) => store.user.isLogin);
+
+  // init
+  useEffect(() => {
+    if (isLogin) {
+      history.push("/");
+    }
+  }, [isLogin, history]);
 
   const handleInputChange = (e) => {
     setErrorMessage(null);
@@ -38,22 +48,20 @@ function RegisterPage() {
     setClicked(true);
     setErrorMessage(null);
     if (!username || !nickname) {
-      return setErrorMessage("Please fill in the blank input box.");
+      return setErrorMessage(ERRMESSAGE.BLANK_USER_INFO);
     }
 
-    // call API
-    register(nickname, username, password).then((response) => {
-      if (!response.ok) {
-        return setErrorMessage(response.message);
+    dispatch(setRegister(nickname, username, password)).then((res) => {
+      if (!res.ok) {
+        return setErrorMessage(res.message);
       }
-      setAuthToken(response.token);
-      getUserInfo().then((response) => {
-        if (!response.ok) {
-          return setErrorMessage(response.message);
-        }
-        setUser(response.data);
-        history.push("/");
-      });
+      if (getAuthToken()) {
+        dispatch(setLoginInfo()).then((res) => {
+          if (!res.ok) {
+            return setErrorMessage(res.message);
+          }
+        });
+      }
     });
   };
 

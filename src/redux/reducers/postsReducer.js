@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllPosts, getPostInfo, getUserPosts } from "../../WebAPI";
+import {
+  getAllPosts,
+  getPostInfo,
+  getUserPosts,
+  addNewPost,
+} from "../../WebAPI";
 
 export const postsReducer = createSlice({
   name: "posts",
@@ -86,6 +91,10 @@ export const getUserPostsById = (userId) => (dispatch) => {
   });
 };
 
-// export const addNewPost = (data)
+export const createNewPost = (title, content) => (dispatch) => {
+  return addNewPost(title, content).then((res) => {
+    return res;
+  });
+};
 
 export default postsReducer.reducer;

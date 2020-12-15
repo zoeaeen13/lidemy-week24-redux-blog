@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { addNewPost } from "../../WebAPI";
+import { createNewPost } from "../../redux/reducers/postsReducer";
+import { useDispatch } from "react-redux";
+import ERRMESSAGE from "../../constants/errorMessage";
 import {
   NewPostForm,
   NewPostWrapper,
@@ -12,6 +14,7 @@ import {
 
 function NewPostPage() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
@@ -30,13 +33,11 @@ function NewPostPage() {
   const handleSubmitPost = (e) => {
     e.preventDefault();
     if (!title || !content) {
-      return setErrorMessage("Please fill in the blank for your article.");
+      return setErrorMessage(ERRMESSAGE.BLANK_ARTICLE);
     }
-
-    // call API
-    addNewPost(title, content).then((response) => {
-      if (!response.id) {
-        return setErrorMessage(response.message);
+    dispatch(createNewPost(title, content)).then((res) => {
+      if (!res.id) {
+        return setErrorMessage(res.message);
       }
       history.push("/");
     });

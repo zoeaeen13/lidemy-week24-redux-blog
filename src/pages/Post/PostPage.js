@@ -28,7 +28,7 @@ function PostPage() {
 
   useEffect(() => {
     if (recentPost) {
-      dispatch(getRelatedPosts(recentPost.user.id, slug));
+      dispatch(getRelatedPosts(recentPost.user.id, Number(slug)));
     }
   }, [slug, recentPost, dispatch]);
 

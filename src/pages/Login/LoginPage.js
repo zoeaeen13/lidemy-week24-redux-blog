@@ -1,8 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { login, getUserInfo } from "../../WebAPI";
-import { setAuthToken } from "../../utills";
-import { AuthContext } from "../../contexts";
+import { setLogin, setLoginInfo } from "../../redux/reducers/userReducer";
+import { useSelector, useDispatch } from "react-redux";
+import { getAuthToken } from "../../utills";
+import ERRMESSAGE from "../../constants/errorMessage";
 import {
   LoginPageRoot,
   LoginTitle,
@@ -16,17 +17,26 @@ import {
 } from "../../components/Login";
 
 function LoginPage() {
-  const { setUser } = useContext(AuthContext);
-  const [account, setAccount] = useState("zoeaeen13");
+  // UI state
+  const [username, setUsername] = useState("zoeaeen13");
   const [password, setPassword] = useState("Lidemy");
   const [isClicked, setClicked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const isLogin = useSelector((store) => store.user.isLogin);
+
+  // init
+  useEffect(() => {
+    if (isLogin) {
+      history.push("/");
+    }
+  }, [isLogin, history]);
 
   const handleInputChange = (e) => {
     setErrorMessage(null);
     if (e.target.name === "account") {
-      setAccount(e.target.value);
+      setUsername(e.target.value);
     }
 
     if (e.target.name === "password") {
@@ -37,23 +47,21 @@ function LoginPage() {
   const handleButtonClick = () => {
     setClicked(true);
     setErrorMessage(null);
-    if (!account || !password) {
-      return setErrorMessage("Please fill in the blank input box.");
+    if (!username || !password) {
+      return setErrorMessage(ERRMESSAGE.BLANK_USER_INFO);
     }
 
-    // call API
-    login(account, password).then((response) => {
-      if (!response.ok) {
-        return setErrorMessage(response.message);
+    dispatch(setLogin(username, password)).then((res) => {
+      if (!res.ok) {
+        return setErrorMessage(res.message);
       }
-      setAuthToken(response.token);
-      getUserInfo().then((response) => {
-        if (!response.ok) {
-          return setErrorMessage(response.message);
-        }
-        setUser(response.data);
-        history.push("/");
-      });
+      if (getAuthToken()) {
+        dispatch(setLoginInfo()).then((res) => {
+          if (!res.ok) {
+            return setErrorMessage(res.message);
+          }
+        });
+      }
     });
   };
 
@@ -63,15 +71,15 @@ function LoginPage() {
       <LoginDesc>Enter the account and password.</LoginDesc>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <LoginWrapper>
-        <LoginInputHint verify={isClicked && !account}>
+        <LoginInputHint verify={isClicked && !username}>
           Your account
         </LoginInputHint>
         <LoginInput
           name="account"
           type="text"
-          value={account}
+          value={username}
           onChange={handleInputChange}
-          verify={isClicked && !account}
+          verify={isClicked && !username}
         />
         <LoginInputHint verify={isClicked && !password}>
           Your password
