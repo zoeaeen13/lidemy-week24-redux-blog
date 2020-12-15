@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getAllPosts, getUserPosts } from "../../WebAPI";
+import { getPosts, getUserPostsById } from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import Intro from "../../components/Intro";
 import Pagination from "../../components/Pagination";
@@ -12,64 +13,73 @@ import {
 
 function ArchivePage() {
   let { slug } = useParams();
-  const [userPosts, setUserPosts] = useState([]);
-  const [author, setAuthor] = useState(null);
-  const [archivePosts, setArchivePosts] = useState([]);
+  const dispatch = useDispatch();
+  const archivePosts = useSelector((store) => store.posts.allPosts);
+  const userPosts = useSelector((store) => {
+    if (store.posts.userPostsData) {
+      return store.posts.userPostsData.posts;
+    }
+  });
+  const userData = useSelector((store) => {
+    if (store.posts.userPostsData) {
+      return store.posts.userPostsData.author;
+    }
+  });
+
+  // ui state
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [recentPosts, setRecentPosts] = useState([]);
-  const handleChangePage = (page) => {
-    setCurrentPage(page);
-  };
 
   // init
   useEffect(() => {
-    // specific user posts
     if (slug) {
-      getUserPosts(slug).then((response) => {
-        if (response.posts.length > 0) {
-          setUserPosts(response.posts.reverse());
-        }
-        setAuthor({
-          nickname: response.nickname,
-          postNum: response.posts.length,
-        });
-      });
+      dispatch(getUserPostsById(slug));
     } else {
-      // archive
-      getAllPosts().then((posts) => {
-        if (posts.length > 0) {
-          let quotient = Math.ceil(posts.length / 5);
-          if (!posts.length % 5) {
-            quotient += 1;
-          }
-          setArchivePosts(posts);
-          setCurrentPage(1);
-          setTotalPage(quotient);
-        }
-      });
+      dispatch(getPosts());
     }
-  }, [slug]);
+  }, [slug, dispatch]);
+
+  // set archive pagination
+  useEffect(() => {
+    if (archivePosts) {
+      if (archivePosts.length > 0) {
+        let quotient = Math.ceil(archivePosts.length / 5);
+        if (!archivePosts.length % 5) {
+          quotient += 1;
+        }
+        setCurrentPage(1);
+        setTotalPage(quotient);
+      }
+    }
+  }, [archivePosts]);
 
   // change pages
   useEffect(() => {
-    const index = (currentPage - 1) * 5;
-    setRecentPosts(archivePosts.slice(index, index + 5));
+    if (archivePosts) {
+      const index = (currentPage - 1) * 5;
+      setRecentPosts(archivePosts.slice(index, index + 5));
+    }
   }, [archivePosts, currentPage]);
+
+  const handleChangePage = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <HomePageRoot>
       <Intro />
       <HomeWrapper>
         {!slug && <ArchiveTitle>所有文章</ArchiveTitle>}
-        {slug && author && (
+        {slug && userData && (
           <ArchiveTitle>
-            '{author.nickname}' 目前發表了 {author.postNum} 篇文章
+            '{userData.nickname}' 目前發表了 {userData.postsNum} 篇文章
           </ArchiveTitle>
         )}
         {recentPosts &&
           recentPosts.map((post) => <ArchiveItem key={post.id} post={post} />)}
         {slug &&
+          userPosts &&
           userPosts.map((post) => <ArchiveItem key={post.id} post={post} />)}
         {!slug && recentPosts && totalPage && (
           <Pagination

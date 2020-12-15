@@ -192,7 +192,7 @@ export function PostInfo({ post }) {
     <PostWrapper>
       <PostDate>{date}</PostDate>
       <PostInfoTitle>{post.title}</PostInfoTitle>
-      {post.user.nickname && (
+      {post.user.nickname && post.userId && (
         <PostAuthor to={`/user/${post.userId}`}>
           {post.user.nickname}
         </PostAuthor>
@@ -234,6 +234,7 @@ PostInfo.propTypes = {
 
 RelatedPost.propTypes = {
   post: PropTypes.object,
+  order: PropTypes.number,
 };
 
 ArchiveItem.propTypes = {

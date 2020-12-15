@@ -1,6 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getPostInfo, getUserPosts } from "../../WebAPI";
+import {
+  getRecentPost,
+  getRelatedPosts,
+} from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
+import Intro from "../../components/Intro";
 import {
   HomePageRoot,
   HomeWrapper,
@@ -9,34 +14,23 @@ import {
   RelatedWrapper,
   RelatedTitle,
 } from "../../components/Home";
-import Intro from "../../components/Intro";
 
 function PostPage() {
   let { slug } = useParams();
-  const [recentPost, setRecentPost] = useState(null);
-  const [userId, setUserId] = useState(0);
-  const [relatedPosts, setRelatedPosts] = useState(null);
-  console.log("rela", relatedPosts);
+  const dispatch = useDispatch();
+  const recentPost = useSelector((store) => store.posts.recentPost);
+  const relatedPosts = useSelector((store) => store.posts.relatedPosts);
+
   // init
   useEffect(() => {
-    getPostInfo(slug).then((postInfo) => {
-      setRecentPost(postInfo[0]);
-      setUserId(postInfo[0].userId);
-    });
-  }, [slug]);
+    dispatch(getRecentPost(slug));
+  }, [slug, dispatch]);
 
   useEffect(() => {
-    getUserPosts(userId).then((responseData) => {
-      if (responseData.id) {
-        const relatedAllPosts = responseData.posts.filter(
-          (post) => post.id !== Number(slug)
-        );
-        if (relatedAllPosts.length > 0) {
-          setRelatedPosts(relatedAllPosts.filter((post, index) => index < 3));
-        }
-      }
-    });
-  }, [slug, userId]);
+    if (recentPost) {
+      dispatch(getRelatedPosts(recentPost.user.id, slug));
+    }
+  }, [slug, recentPost, dispatch]);
 
   return (
     <HomePageRoot>

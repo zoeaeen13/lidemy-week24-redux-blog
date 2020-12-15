@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import { getAllPosts } from "../../WebAPI";
+import { useEffect } from "react";
+import { getPosts } from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
 import Intro from "../../components/Intro";
 import { HomePageRoot, HomeWrapper, Post } from "../../components/Home";
 
 function HomePage() {
-  const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
+  const posts = useSelector((store) => store.posts.allPosts);
 
   // init
   useEffect(() => {
-    getAllPosts().then((posts) => setPosts(posts));
-  }, []);
+    dispatch(getPosts());
+  }, [dispatch]);
 
   return (
     <HomePageRoot>
