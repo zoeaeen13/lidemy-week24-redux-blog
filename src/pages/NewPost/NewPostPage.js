@@ -19,6 +19,7 @@ import {
 
 function NewPostPage() {
   let { slug } = useParams();
+  console.log("slug", slug);
   const history = useHistory();
   const dispatch = useDispatch();
   const recentPost = useSelector((store) => store.posts.recentPost);
@@ -41,11 +42,11 @@ function NewPostPage() {
 
   // default value
   useEffect(() => {
-    if (recentPost) {
+    if (recentPost && slug) {
       setTitle(recentPost.title);
       setContent(recentPost.body);
     }
-  }, [recentPost]);
+  }, [slug, recentPost]);
 
   const handleInputChange = (e) => {
     setErrorMessage(null);
@@ -63,7 +64,6 @@ function NewPostPage() {
     if (!title || !content) {
       return setErrorMessage(ERRMESSAGE.BLANK_ARTICLE);
     }
-
     if (slug) {
       dispatch(setPostEdited(slug, title, content)).then((res) => {
         if (!res.id) {

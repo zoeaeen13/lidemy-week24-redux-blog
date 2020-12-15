@@ -206,6 +206,10 @@ const BtnDelete = styled.button`
     color: white;
     border: none;
   }
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const BtnEdit = styled(Link)`
