@@ -9,6 +9,19 @@ const PostWrapper = styled.div`
   margin-bottom: 20px;
   padding: 25px 0;
 `;
+
+const PostInfoTitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  align-items: center;
+
+  ${MEDIA_QUERY_LG} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
 const PostTitle = styled(Link)`
   margin: 5px 0;
   color: #212121;
@@ -123,6 +136,7 @@ const RelatedPostNum = styled.span`
   color: #212121;
   letter-spacing: 0.1em;
 `;
+
 const ArchiveContent = styled.p`
   color: #212121;
   font-size: 22px;
@@ -174,24 +188,73 @@ export const RelatedWrapper = styled.div`
   }
 `;
 
+const BtnDelete = styled.button`
+  margin: 5px;
+  border: 0.8px solid #cccccc;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #666666;
+  background: white;
+  text-decoration: none;
+  transition: ease-in 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    background: crimson;
+    color: white;
+    border: none;
+  }
+`;
+
+const BtnEdit = styled(Link)`
+  margin: 5px;
+  border: 0.8px solid #cccccc;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #666666;
+  background: white;
+  text-decoration: none;
+  transition: ease-in 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    background: #03a87c;
+    color: white;
+    border: none;
+  }
+`;
+
 export function Post({ post }) {
   const date = timeConverter(post.createdAt);
   return (
     <PostWrapper>
       <PostDate>{date}</PostDate>
-      <PostTitle to={`/posts/${post.id}`}>{post.title}</PostTitle>
+      <PostTitle to={`/article/${post.id}`}>{post.title}</PostTitle>
       <PostContent>{post.body}</PostContent>
-      <BtnReadMore to={`/posts/${post.id}`}>Read more</BtnReadMore>
+      <BtnReadMore to={`/article/${post.id}`}>Read more</BtnReadMore>
     </PostWrapper>
   );
 }
 
-export function PostInfo({ post }) {
+export function PostInfo({ post, handleDeletePost }) {
   const date = timeConverter(post.createdAt);
+  const handleDeleteClick = () => {
+    handleDeletePost(post.id);
+  };
   return (
     <PostWrapper>
       <PostDate>{date}</PostDate>
-      <PostInfoTitle>{post.title}</PostInfoTitle>
+      <PostInfoTitleWrapper>
+        <PostInfoTitle>{post.title}</PostInfoTitle>
+        <div>
+          <BtnDelete onClick={handleDeleteClick}>刪除</BtnDelete>
+          <BtnEdit to={`/post/${post.id}`}>修改</BtnEdit>
+        </div>
+      </PostInfoTitleWrapper>
       {post.user.nickname && post.userId && (
         <PostAuthor to={`/user/${post.userId}`}>
           {post.user.nickname}
@@ -207,7 +270,9 @@ export function RelatedPost({ order, post }) {
   return (
     <RelatedPostWrapper>
       <RelatedPostNum>#{order}</RelatedPostNum>
-      <RelatedPostTitle to={`/posts/${post.id}`}>{post.title}</RelatedPostTitle>
+      <RelatedPostTitle to={`/article/${post.id}`}>
+        {post.title}
+      </RelatedPostTitle>
       <PostDate>{date}</PostDate>
     </RelatedPostWrapper>
   );
@@ -217,7 +282,7 @@ export function ArchiveItem({ post }) {
   const date = timeConverter(post.createdAt);
   return (
     <PostWrapper>
-      <PostTitle to={`/posts/${post.id}`}>{post.title}</PostTitle>
+      <PostTitle to={`/article/${post.id}`}>{post.title}</PostTitle>
       <PostDate>{date}</PostDate>
       <ArchiveContent>{post.body}</ArchiveContent>
     </PostWrapper>
@@ -230,6 +295,7 @@ Post.propTypes = {
 
 PostInfo.propTypes = {
   post: PropTypes.object,
+  handleDeletePost: PropTypes.func,
 };
 
 RelatedPost.propTypes = {

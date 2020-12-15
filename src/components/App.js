@@ -35,13 +35,16 @@ function App() {
           <Route path="/register">
             <RegisterPage />
           </Route>
-          <Route path="/post">
+          <Route path="/post/">
+            <NewPostPage />
+          </Route>
+          <Route path="/post/:slug">
             <NewPostPage />
           </Route>
           <Route path="/archive">
             <ArchivePage />
           </Route>
-          <Route path="/posts/:slug">
+          <Route path="/article/:slug">
             <PostPage />
           </Route>
           <Route path="/user/:slug">

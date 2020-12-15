@@ -70,3 +70,28 @@ export const addNewPost = (title, content) => {
     }),
   }).then((res) => res.json());
 };
+
+export const deletePost = (id) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/posts/${id}`, {
+    method: "DELETE",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.status);
+};
+
+export const editPostById = (id, newTitle, newContent) => {
+  const token = getAuthToken();
+  return fetch(`${BASE_URL}/posts/${id}`, {
+    method: "PATCH",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title: newTitle,
+      body: newContent,
+    }),
+  }).then((res) => res.json());
+};

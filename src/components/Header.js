@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MEDIA_QUERY_MD } from "../constants/style";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { setLoginOut } from "../redux/reducers/userReducer";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -85,8 +85,7 @@ export default function Header() {
   let location = useLocation();
   const dispatch = useDispatch();
   const isLogin = useSelector((store) => store.user.isLogin);
-  const isPosting = location.pathname === "/post";
-
+  const isPosting = location.pathname.indexOf("/post") === 0 ? true : false;
   const handleLogout = () => {
     dispatch(setLoginOut());
   };

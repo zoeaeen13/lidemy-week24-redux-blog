@@ -1,7 +1,12 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { createNewPost } from "../../redux/reducers/postsReducer";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import {
+  createNewPost,
+  getRecentPost,
+  clearPostPage,
+  setPostEdited,
+} from "../../redux/reducers/postsReducer";
+import { useSelector, useDispatch } from "react-redux";
 import ERRMESSAGE from "../../constants/errorMessage";
 import {
   NewPostForm,
@@ -13,11 +18,34 @@ import {
 } from "../../components/NewPost";
 
 function NewPostPage() {
+  let { slug } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const recentPost = useSelector((store) => store.posts.recentPost);
+
+  // UI state
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
+
+  // init
+  useEffect(() => {
+    if (slug) {
+      dispatch(getRecentPost(slug));
+    }
+
+    return () => {
+      dispatch(clearPostPage());
+    };
+  }, [slug, dispatch]);
+
+  // default value
+  useEffect(() => {
+    if (recentPost) {
+      setTitle(recentPost.title);
+      setContent(recentPost.body);
+    }
+  }, [recentPost]);
 
   const handleInputChange = (e) => {
     setErrorMessage(null);
@@ -35,12 +63,22 @@ function NewPostPage() {
     if (!title || !content) {
       return setErrorMessage(ERRMESSAGE.BLANK_ARTICLE);
     }
-    dispatch(createNewPost(title, content)).then((res) => {
-      if (!res.id) {
-        return setErrorMessage(res.message);
-      }
-      history.push("/");
-    });
+
+    if (slug) {
+      dispatch(setPostEdited(slug, title, content)).then((res) => {
+        if (!res.id) {
+          return setErrorMessage(res.message);
+        }
+        history.push("/");
+      });
+    } else {
+      dispatch(createNewPost(title, content)).then((res) => {
+        if (!res.id) {
+          return setErrorMessage(res.message);
+        }
+        history.push("/");
+      });
+    }
   };
 
   return (

@@ -4,12 +4,13 @@ import {
   getPostInfo,
   getUserPosts,
   addNewPost,
+  editPostById,
+  deletePost,
 } from "../../WebAPI";
 
 export const postsReducer = createSlice({
   name: "posts",
   initialState: {
-    isLoading: false,
     allPosts: null,
     recentPost: null,
     relatedPosts: null,
@@ -17,10 +18,6 @@ export const postsReducer = createSlice({
   },
 
   reducers: {
-    setIsLoading: (state, action) => {
-      state.isLoading = action.payload;
-    },
-
     setRecentPost: (state, action) => {
       state.recentPost = action.payload;
     },
@@ -40,7 +37,6 @@ export const postsReducer = createSlice({
 });
 
 export const {
-  setIsLoading,
   setRecentPost,
   setRelatedPosts,
   setAllPosts,
@@ -54,11 +50,14 @@ export const getPosts = () => (dispatch) => {
 };
 
 export const getRecentPost = (id) => (dispatch) => {
-  dispatch(setIsLoading(true));
   getPostInfo(id).then((postInfo) => {
     dispatch(setRecentPost(postInfo[0]));
-    dispatch(setIsLoading(false));
   });
+};
+
+export const clearPostPage = () => (dispatch) => {
+  dispatch(setRecentPost(null));
+  dispatch(setRelatedPosts(null));
 };
 
 export const getRelatedPosts = (userId, postId) => (dispatch) => {
@@ -93,6 +92,18 @@ export const getUserPostsById = (userId) => (dispatch) => {
 
 export const createNewPost = (title, content) => (dispatch) => {
   return addNewPost(title, content).then((res) => {
+    return res;
+  });
+};
+
+export const setPostDeleted = (id) => (dispatch) => {
+  return deletePost(id).then((statusCode) => {
+    return statusCode;
+  });
+};
+
+export const setPostEdited = (id, newTitle, newContent) => (dispatch) => {
+  return editPostById(id, newTitle, newContent).then((res) => {
     return res;
   });
 };

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   getRecentPost,
   getRelatedPosts,
+  setPostDeleted,
+  clearPostPage,
 } from "../../redux/reducers/postsReducer";
 import { useSelector, useDispatch } from "react-redux";
 import Intro from "../../components/Intro";
@@ -18,12 +20,16 @@ import {
 function PostPage() {
   let { slug } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
   const recentPost = useSelector((store) => store.posts.recentPost);
   const relatedPosts = useSelector((store) => store.posts.relatedPosts);
 
   // init
   useEffect(() => {
     dispatch(getRecentPost(slug));
+    return () => {
+      dispatch(clearPostPage());
+    };
   }, [slug, dispatch]);
 
   useEffect(() => {
@@ -32,11 +38,21 @@ function PostPage() {
     }
   }, [slug, recentPost, dispatch]);
 
+  const handleDeletePost = (id) => {
+    dispatch(setPostDeleted(id)).then((statusCode) => {
+      if (statusCode === 200) {
+        history.push("/");
+      }
+    });
+  };
+
   return (
     <HomePageRoot>
       <Intro />
       <HomeWrapper>
-        {recentPost && <PostInfo post={recentPost} />}
+        {recentPost && (
+          <PostInfo post={recentPost} handleDeletePost={handleDeletePost} />
+        )}
         <RelatedTitle>同系列文章還有...</RelatedTitle>
         <RelatedWrapper>
           {relatedPosts &&
