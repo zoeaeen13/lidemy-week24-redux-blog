@@ -33,4 +33,26 @@
 - 導入 Prettier 讓程式碼格式統一
 - 組織 React app 檔案結構
 
----
+
+### 專案結構
+- /src
+    - /components
+    - /constants
+        - errorMessage.js
+        - style.js
+    - /pages
+        - LoginPage.js
+        - RegisterPage.js
+        - HomePage.js
+        - ArchivePage.js
+        - Post.js
+        - About.js
+    - /redux
+        - store.js
+        - /reducers 
+            - postsReducer.js
+            - userReducer.js
+    - index.js
+    - utills.js: All Utility functions
+    - WebAPI.js: Integrate to call API
+
