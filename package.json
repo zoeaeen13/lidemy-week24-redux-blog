@@ -15,7 +15,7 @@
     "react-scripts": "4.0.1",
     "styled-components": "^5.2.1"
   },
-  "homepage": "https://zoeaeen13.github.io/lidemy-week24-redux-blog",
+  "homepage": "https://zoeaeen13.github.io/redux-blog",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
