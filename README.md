@@ -1,68 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+## React-Redux Blog
+一個串接 Lidemy API 的部落格系統，註冊用戶可以檢視、上傳、編輯及刪除文章。
+- [Demo](https://zoeaeen13.github.io/lidemy-week24-redux-blog/#/)
+- [Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)
+![](https://i.imgur.com/WFnDbxX.gif)
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+### 功能
+- 顯示所有文章列表
+- 點擊顯示單頁文章內容（標題、發文時間以及文章內容）
+- 註冊/登入功能，密碼預設「Lidemy」
+- Token 機制
+- 發布文章功能：登入狀態下，顯示發布文章的頁面按鈕，輸入標題及內容即可新增文章
+- 編輯及刪除功能：登入狀態下顯示刪除及編輯按鈕
+- 分頁功能，archive 排序從新到舊，以 5 筆為一頁
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![](https://i.imgur.com/pFBBXTI.jpg)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+![](https://i.imgur.com/HJNrABu.jpg)
 
-### `npm test`
+![](https://i.imgur.com/8IckzGK.jpg)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### 使用技術
+- 以 React 搭配 Redux、React-router 建立具備會員系統的部落格
+- 以 JSX 語法撰寫元件
+- 支援 RWD，使用 styled-component、SASS 進行排版
+- 使用 funciton component 及 hooks
+- 以 Redux 進行狀態管理，透過 reducer、action 及 dispatch 更新 data，使用 Redux-toolkit 標準化流程
+- React-router-dom 做 SPA 頁面導向
+- 導入 Prettier 讓程式碼格式統一
+- 組織 React app 檔案結構
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### 專案結構
+- /src
+    - /components
+    - /constants
+        - errorMessage.js
+        - style.js
+    - /pages
+        - LoginPage.js
+        - RegisterPage.js
+        - HomePage.js
+        - ArchivePage.js
+        - Post.js
+        - About.js
+    - /redux
+        - store.js
+        - /reducers 
+            - postsReducer.js
+            - userReducer.js
+    - index.js
+    - utills.js: All Utility functions
+    - WebAPI.js: Integrate to call API
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
