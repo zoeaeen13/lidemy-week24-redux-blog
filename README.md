@@ -1,6 +1,6 @@
 ## React-Redux Blog
 一個串接 Lidemy API 的部落格系統，註冊用戶可以檢視、上傳、編輯及刪除文章。
-- [Demo](https://zoeaeen13.github.io/lidemy-week24-redux-blog/#/)
+- [Demo](https://zoeaeen13.github.io/redux-blog/#/)
 - [Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)
 ![](https://i.imgur.com/WFnDbxX.gif)
 
