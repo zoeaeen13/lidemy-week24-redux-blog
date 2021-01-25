@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import imgLeft from "../images/left-arrow.png";
+import imgRight from "../images/right-arrow.png";
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -52,13 +54,13 @@ export default function Pagination({ current, total, handleChangePage }) {
     <PaginationWrapper>
       {current !== 1 && (
         <ArrowWrapper onClick={handlePreviouspage}>
-          <img alt="" src="./images/left-arrow.png" />
+          <img alt="" src={imgLeft} />
         </ArrowWrapper>
       )}
       <CurrentPage>目前第 {current} 頁</CurrentPage>
       {current !== total && (
         <ArrowWrapper onClick={handleNextPage}>
-          <img alt="" src="./images/right-arrow.png" />
+          <img alt="" src={imgRight} />
         </ArrowWrapper>
       )}
     </PaginationWrapper>

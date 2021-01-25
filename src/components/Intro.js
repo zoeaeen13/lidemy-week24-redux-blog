@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { MEDIA_QUERY_LG } from "../constants/style";
+import imgAvatar from "../images/avatar.png";
 
 const IntroWrapper = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ export default function Intro() {
   return (
     <IntroWrapper>
       <AvatarWrapper>
-        <img src="images/avatar.png" alt="" />
+        <img src={imgAvatar} alt="" />
       </AvatarWrapper>
       <IntroBadge>ABOUT</IntroBadge>
       <AuthorName>Lidemy</AuthorName>

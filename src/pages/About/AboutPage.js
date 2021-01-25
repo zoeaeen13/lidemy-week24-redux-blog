@@ -5,12 +5,13 @@ import {
   AboutTitle,
   AboutDesc,
 } from "../../components/About";
+import imgAvatar from "../../images/avatar.png";
 
 function AboutPage() {
   return (
     <AboutWrapper>
       <AboutAvatarWrapper>
-        <img src="images/avatar.png" alt="" />
+        <img src={imgAvatar} alt="" />
       </AboutAvatarWrapper>
       <div>
         <AboutBadge>ABOUT</AboutBadge>
