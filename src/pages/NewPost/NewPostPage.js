@@ -19,7 +19,6 @@ import {
 
 function NewPostPage() {
   let { slug } = useParams();
-  console.log("slug", slug);
   const history = useHistory();
   const dispatch = useDispatch();
   const recentPost = useSelector((store) => store.posts.recentPost);

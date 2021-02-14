@@ -244,7 +244,11 @@ export function Post({ post }) {
   );
 }
 
-export function PostInfo({ post, handleDeletePost }) {
+Post.propTypes = {
+  post: PropTypes.object,
+};
+
+export function PostInfo({ post, handleDeletePost, isUser }) {
   const date = timeConverter(post.createdAt);
   const handleDeleteClick = () => {
     handleDeletePost(post.id);
@@ -254,10 +258,12 @@ export function PostInfo({ post, handleDeletePost }) {
       <PostDate>{date}</PostDate>
       <PostInfoTitleWrapper>
         <PostInfoTitle>{post.title}</PostInfoTitle>
-        <div>
-          <BtnDelete onClick={handleDeleteClick}>刪除</BtnDelete>
-          <BtnEdit to={`/post/${post.id}`}>修改</BtnEdit>
-        </div>
+        {isUser && (
+          <div>
+            <BtnDelete onClick={handleDeleteClick}>刪除</BtnDelete>
+            <BtnEdit to={`/post/${post.id}`}>修改</BtnEdit>
+          </div>
+        )}
       </PostInfoTitleWrapper>
       {post.user.nickname && post.userId && (
         <PostAuthor to={`/user/${post.userId}`}>
@@ -268,6 +274,12 @@ export function PostInfo({ post, handleDeletePost }) {
     </PostWrapper>
   );
 }
+
+PostInfo.propTypes = {
+  post: PropTypes.object,
+  handleDeletePost: PropTypes.func,
+  isUser: PropTypes.bool,
+};
 
 export function RelatedPost({ order, post }) {
   const date = timeConverter(post.createdAt);
@@ -282,6 +294,11 @@ export function RelatedPost({ order, post }) {
   );
 }
 
+RelatedPost.propTypes = {
+  post: PropTypes.object,
+  order: PropTypes.number,
+};
+
 export function ArchiveItem({ post }) {
   const date = timeConverter(post.createdAt);
   return (
@@ -292,20 +309,6 @@ export function ArchiveItem({ post }) {
     </PostWrapper>
   );
 }
-
-Post.propTypes = {
-  post: PropTypes.object,
-};
-
-PostInfo.propTypes = {
-  post: PropTypes.object,
-  handleDeletePost: PropTypes.func,
-};
-
-RelatedPost.propTypes = {
-  post: PropTypes.object,
-  order: PropTypes.number,
-};
 
 ArchiveItem.propTypes = {
   post: PropTypes.object,

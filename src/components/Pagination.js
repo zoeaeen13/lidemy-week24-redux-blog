@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import imgLeft from "../images/left-arrow.png";
 import imgRight from "../images/right-arrow.png";
+import PropTypes from "prop-types";
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -66,3 +67,9 @@ export default function Pagination({ current, total, handleChangePage }) {
     </PaginationWrapper>
   );
 }
+
+Pagination.propTypes = {
+  current: PropTypes.number,
+  total: PropTypes.number,
+  handleChangePage: PropTypes.func,
+};
