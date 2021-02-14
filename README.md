@@ -1,6 +1,6 @@
 ## React-Redux Blog
 一個串接 Lidemy API 的部落格系統，註冊用戶可以檢視、上傳、編輯及刪除文章。
-- [Demo](https://zoeaeen13.github.io/lidemy-week24-redux-blog/#/)
+- [Demo](https://zoeaeen13.github.io/redux-blog/#/)
 - [Lidemy API](https://github.com/Lidemy/lidemy-student-json-api-server)
 ![](https://i.imgur.com/WFnDbxX.gif)
 
@@ -26,10 +26,10 @@
 ### 使用技術
 - 以 React 搭配 Redux、React-router 建立具備會員系統的部落格
 - 以 JSX 語法撰寫元件
-- 支援 RWD，使用 styled-component、SASS 進行排版
+- 支援 RWD，使用 styled-components 以 Sass 進行排版
 - 使用 funciton component 及 hooks
-- 以 Redux 進行狀態管理，透過 reducer、action 及 dispatch 更新 data，使用 Redux-toolkit 標準化流程
-- React-router-dom 做 SPA 頁面導向
+- 以 Redux 進行狀態管理，瞭解 reducer、action 及 dispatch 作用，使用 Redux-toolkit 標準化流程
+- react-router-dom 路由導向
 - 導入 Prettier 讓程式碼格式統一
 - 組織 React app 檔案結構
 
