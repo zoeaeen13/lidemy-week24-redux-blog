@@ -1,17 +1,18 @@
 {
   "files": {
-    "main.js": "/redux-blog/static/js/main.81613419.chunk.js",
-    "main.js.map": "/redux-blog/static/js/main.81613419.chunk.js.map",
+    "main.js": "/redux-blog/static/js/main.6e5b6b01.chunk.js",
+    "main.js.map": "/redux-blog/static/js/main.6e5b6b01.chunk.js.map",
     "runtime-main.js": "/redux-blog/static/js/runtime-main.02a2b30c.js",
     "runtime-main.js.map": "/redux-blog/static/js/runtime-main.02a2b30c.js.map",
-    "static/js/2.daff16c4.chunk.js": "/redux-blog/static/js/2.daff16c4.chunk.js",
-    "static/js/2.daff16c4.chunk.js.map": "/redux-blog/static/js/2.daff16c4.chunk.js.map",
+    "static/js/2.b077b678.chunk.js": "/redux-blog/static/js/2.b077b678.chunk.js",
+    "static/js/2.b077b678.chunk.js.map": "/redux-blog/static/js/2.b077b678.chunk.js.map",
     "index.html": "/redux-blog/index.html",
-    "static/js/2.daff16c4.chunk.js.LICENSE.txt": "/redux-blog/static/js/2.daff16c4.chunk.js.LICENSE.txt"
+    "static/js/2.b077b678.chunk.js.LICENSE.txt": "/redux-blog/static/js/2.b077b678.chunk.js.LICENSE.txt",
+    "static/media/avatar.bd629eee.png": "/redux-blog/static/media/avatar.bd629eee.png"
   },
   "entrypoints": [
     "static/js/runtime-main.02a2b30c.js",
-    "static/js/2.daff16c4.chunk.js",
-    "static/js/main.81613419.chunk.js"
+    "static/js/2.b077b678.chunk.js",
+    "static/js/main.6e5b6b01.chunk.js"
   ]
 }
